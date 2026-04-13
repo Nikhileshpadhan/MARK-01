@@ -1,128 +1,194 @@
-# MARK-01 Local Run and Deployment Guide
+# 📈 MarketMind — AI-Powered Stock Intelligence Platform
 
-This project has two apps:
-- `frontend/` (React + Vite)
-- `marketmind/` (FastAPI backend)
+> Real-time stock analysis with ML predictions, technical indicators, and LLM-driven trading recommendations.
 
-## 1. Run Locally
+![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square&logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?style=flat-square&logo=fastapi)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)
+![Groq](https://img.shields.io/badge/Groq-Llama_3.3_70B-orange?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
-### Backend (FastAPI)
-1. Open terminal in `marketmind/`.
-2. Create and activate virtual environment (if needed):
+---
 
-```powershell
-python -m venv venv
-.\venv\Scripts\Activate.ps1
+## 🧠 What is MarketMind?
+
+MarketMind is an advanced real-time stock intelligence platform that combines traditional financial data with AI-driven sentiment analysis and machine learning. It provides a comprehensive dashboard to monitor market trends, analyze technical indicators, and receive AI-powered trading recommendations.
+
+---
+
+## 🏗️ Architecture
+
+MarketMind is built as a **decoupled full-stack application** — a high-performance Python backend paired with a reactive React frontend.
+
+```
+┌─────────────────────────────────────────────────┐
+│               React Frontend (Vite)              │
+│   TanStack Query · Recharts · Tailwind CSS       │
+└────────────────────┬────────────────────────────┘
+                     │ REST API
+┌────────────────────▼────────────────────────────┐
+│             FastAPI Backend                      │
+│  yfinance · scikit-learn · Groq (Llama 3.3 70B) │
+│  Technical Analysis (RSI, MACD, Bollinger Bands) │
+└─────────────────────────────────────────────────┘
 ```
 
-3. Install dependencies:
+---
 
-```powershell
+## ✨ Key Features
+
+| Feature | Description |
+|--------|-------------|
+| 🤖 **AI Trading Analyst** | Groq Llama 3.3 70B generates Buy/Sell/Hold recommendations with reasoning |
+| 📊 **Technical Indicators** | RSI (14), MACD, and Bollinger Bands computed in real-time |
+| 🔮 **ML Price Predictions** | scikit-learn models predict 1-day, 7-day, and 30-day price targets |
+| 💬 **Social Sentiment** | Tracks Reddit mentions and Buzz scores for retail investor interest |
+| 🔍 **Smart Ticker Resolution** | Type "Apple" → AI resolves to AAPL automatically |
+| 🏥 **Health Diagnostics** | Built-in checks for Finnhub, Alpha Vantage, and Groq service status |
+| 📱 **Responsive UI** | Seamless experience across desktop and mobile |
+
+---
+
+## 🛠️ Tech Stack
+
+### Backend
+- **FastAPI** + **Uvicorn** + **Pydantic**
+- **yfinance** — real-time market data
+- **scikit-learn** — ML price predictions
+- **Groq SDK** (Llama 3.3 70B) — AI analyst
+- **ta** — Technical Analysis library
+- **Pandas**, **NumPy** — data processing
+
+### Frontend
+- **React 19** + **Vite**
+- **Tailwind CSS** — styling
+- **TanStack Query** — data fetching & sync
+- **Recharts** — interactive financial charts
+- **react-window** — optimized list rendering
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+- API Keys: Groq, Finnhub, Alpha Vantage
+
+---
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/nikhilesh/marketmind.git
+cd marketmind
+```
+
+---
+
+### 2. Backend Setup (FastAPI)
+
+```bash
+# Navigate to backend directory
+cd marketmind
+
+# Create and activate virtual environment
+python -m venv venv
+.\venv\Scripts\Activate.ps1        # Windows
+source venv/bin/activate           # Mac/Linux
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-4. Create `.env` from `.env.example` and set real keys.
-5. Start server:
+Create a `.env` file in the `marketmind/` directory:
 
-```powershell
+```env
+GROQ_API_KEY=your_groq_api_key
+FINNHUB_API_KEY=your_finnhub_api_key
+ALPHA_VANTAGE_API_KEY=your_alpha_vantage_api_key
+```
+
+Start the backend server:
+
+```bash
 uvicorn main:app --host 127.0.0.1 --port 8000
 ```
 
-If port 8000 is busy:
+Backend will be running at: `http://127.0.0.1:8000`
 
-```powershell
-uvicorn main:app --host 127.0.0.1 --port 8001
-```
+---
 
-### Frontend (Vite)
-1. Open terminal in `frontend/`.
-2. Install dependencies:
+### 3. Frontend Setup (React + Vite)
 
-```powershell
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
 npm install
 ```
 
-3. Ensure `.env` points to backend:
+Create a `.env` file in the `frontend/` directory:
 
 ```env
 VITE_API_URL=http://127.0.0.1:8000
-VITE_REFRESH_INTERVAL=60000
 ```
 
-4. Start frontend:
+Start the development server:
 
-```powershell
+```bash
 npm run dev
 ```
 
-## 2. CORS Setup (Deployment-safe)
+Frontend will be running at: `http://localhost:5173`
 
-Backend CORS is now environment driven.
+---
 
-Set these in `marketmind/.env`:
+## 📁 Project Structure
 
-```env
-CORS_ORIGINS=https://your-frontend-domain.com,https://www.your-frontend-domain.com
-CORS_ALLOW_CREDENTIALS=false
+```
+marketmind/
+├── marketmind/              # FastAPI Backend
+│   ├── main.py              # Entry point & API routes
+│   ├── requirements.txt     # Python dependencies
+│   └── .env                 # API keys (not committed)
+├── frontend/                # React Frontend
+│   ├── src/
+│   │   ├── components/      # UI components
+│   │   └── App.jsx          # Root component
+│   ├── package.json
+│   └── .env                 # Frontend env vars
+└── README.md
 ```
 
-Notes:
-- Do not use `*` in production for `CORS_ORIGINS`.
-- Keep `CORS_ALLOW_CREDENTIALS=false` unless you explicitly use cookie auth.
-- If enabling credentials, origins must be explicit (no wildcard).
+---
 
-## 3. How to Verify CORS
+## 🔑 API Keys Required
 
-### Browser check
-1. Open frontend and perform API calls from UI.
-2. In DevTools Network tab, check response headers include:
-- `Access-Control-Allow-Origin: <your frontend origin>`
+| Service | Purpose | Get it here |
+|---------|---------|-------------|
+| [Groq](https://console.groq.com) | LLM AI Analysis | console.groq.com |
+| [Finnhub](https://finnhub.io) | Market News & Sentiment | finnhub.io |
+| [Alpha Vantage](https://www.alphavantage.co) | Stock Price Data | alphavantage.co |
 
-### Preflight check with curl (PowerShell)
+> All three have **free tiers** — no credit card required.
 
-```powershell
-curl -i -X OPTIONS "http://127.0.0.1:8000/ranking/latest" `
-  -H "Origin: http://localhost:5173" `
-  -H "Access-Control-Request-Method: GET"
-```
+---
 
-You should see CORS headers in response.
+## 👤 Author
 
-## 4. Pre-deploy Checklist (Common Mistakes)
+**Nikhilesh Padhan**
+- 🌐 [nikhil.dev](https://nikhil.dev)
+- 💼 [LinkedIn](https://linkedin.com/in/nikhilesh)
+- 🐙 [GitHub](https://github.com/nikhilesh)
 
-1. Secrets exposure
-- Do not commit real API keys.
-- Keep only placeholders in `.env.example`.
+---
 
-2. Wrong backend startup directory
-- Run `uvicorn main:app ...` from `marketmind/`, not project root.
+## 📄 License
 
-3. Port conflicts
-- If `WinError 10048`, another process is already using that port.
-- Change port or stop existing process.
+This project is licensed under the MIT License.
 
-4. CORS mismatch
-- Frontend domain must be listed in `CORS_ORIGINS`.
-- Do not use wildcard in production.
+---
 
-5. Frontend API URL mismatch
-- Ensure `VITE_API_URL` matches actual backend host/port.
-
-6. Dependency drift
-- Run `pip install -r requirements.txt` and `npm install` in fresh environment before release.
-
-7. Unknown-company behavior expectations
-- Unknown companies are resolved by backend logic and added to tracked ranking flow.
-- LLM-based company-to-ticker resolution requires valid `GROQ_API_KEY`.
-
-8. Recommendation/news fallback expectations
-- If external APIs are unavailable, fallback signal/news logic may be used.
-- Keep user warning visible because AI/data inference can be wrong.
-
-## 5. Recommended Deployment Smoke Test
-
-1. `GET /health` returns status `ok`.
-2. Frontend loads ranking page without console/network CORS errors.
-3. Search known symbol and unknown company name.
-4. Open company details and verify score, engagement, prediction, and news sections render.
-5. Trigger refresh once and verify data updates.
+> Built with ❤️ by Nikhilesh Padhan — *"Data holds the answers to problems most people haven't thought to ask yet."*
